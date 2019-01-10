@@ -6,32 +6,129 @@
     <style>
         * {
             margin: 0;
-            font-family: "Gill Sans";
+            padding: 0;
+            box-sizing: border-box;
         }
         html, body {
             background-color: black;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 28px;
             color: white;
+        }
+        body {
+            display: flex;
+        }
+        .infos {
+            flex: 0.6;
+            padding: 1.5rem;
+            height: 100vh;
+            overflow-y: scroll;
+            background-color: #222;
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 0.666em;
+        }
+        ul {
+            list-style: none;
+        }
+        li:before {
+            content: "–";
+            padding-right: 0.5em;
+        }
+        li {
+            padding-left: 1em;
+            text-indent: -1em;
+            line-height: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .timer {
+            flex: 0.4;
+            height: 100vh;
+            padding: 1.5rem;
         }
         svg {
             width: 100%;
-            height: 100vh;
-            display: block;
-            cursor: none;
+            height: 100%;
+            font-family: Helvetica, Arial, sans-serif;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
-    <svg>
-        <path id="spinner_background" fill="none" stroke="#555" stroke-width="9" />
-        <path id="spinner" fill="none" stroke="white" stroke-width="15" />
-        <text id="label" font-size="80" fill="white" text-anchor="middle"></text>
-        <text id="label2" font-size="30" fill="white" text-anchor="middle"></text>
-        <text id="label3" font-size="20" fill="white" text-anchor="middle"></text>
-    </svg>
+    <section class="infos">
+        <span class="before">Willkommen zur</span>
+        <header>
+            <h1>Hauptklausur Informatik 1</h1>
+        </header>
+        <ul>
+            <li class="before during">Auf dem Tisch: Studierendenausweis, Personalausweis, dokumentenechter Stift (kein Bleistift), Essen/Trinken.</li>
+            <li class="before during">Außer einem <em>handgeschriebenen</em> A4-Blatt sind keine Hilfsmittel erlaubt.</li>
+            <li class="before during homestretch"><strong>Klausurnummer notieren!</strong> Nur so könnt ihr vor der Klausureinsicht eure Note erfahren.</li>
+            <li class="before during">Betrugsversuche: ...</li>
+            <li class="before during">...</li>
+            <li class="before">...</li>
+            <li class="before">...</li>
+            <li class="before">...</li>
+            <li class="before"><strong>Viel Erfolg!</strong> 🍀</li>
+            <li class="homestretch">Ab jetzt bitte <strong>nicht mehr vorzeitig abgeben</strong>, um eure Kommilitonen nicht zu stören. Bleibt sitzen, bis die Klausur vorbei ist.</li>
+            <li class="after">Bleibt bitte <strong>auf euren Plätzen</strong> sitzen, bis wir eure Klausuren eingesammelt haben.</li>
+            <li class="after">Falls noch nicht geschehen:
+                <br><br><strong style="font-size: 2.5em; color: orangered;">Klausurnummer notieren.</strong><br><br>
+            Nur so könnt ihr vor der Klausureinsicht eure Note erfahren.</li>
+        </ul>
+    </section>
+    <section class="timer">
+        <svg id="timer">
+            <path id="spinner-background" fill="none" stroke="#555" />
+            <path id="spinner" fill="none" stroke="white" />
+            <text id="remaining" fill="white" text-anchor="middle" alignment-baseline="middle"></text>
+            <text id="remaining-above" fill="white" text-anchor="middle" alignment-baseline="middle"></text>
+            <text id="remaining-below" fill="white" text-anchor="middle" alignment-baseline="middle"></text>
+            <path id="start-end-circle" fill="none" stroke="none" />
+            <text id="start-end" fill="white" text-anchor="middle">
+                <textPath id="start-end-path" xlink:href="#start-end-circle"></textPath>
+            </text>
+        </svg>
+    </section>
     <script>
+        /*
+
+        Usage:
+        * Add your own instructions above. "class="before during homestretch""
+          means that the specific element is shown before the exam, during the
+          initial length - 10 minutes and during the homestretch (the final 10
+          minutes). Additionally, an "after" class exists. These four classes
+          can be combined arbitrarily or left out for the element to be visible
+          in all four states.
+        * Adjust the exam duration below.
+        * Disable notifications etc. (macOS does this out of the box when
+          screen mirroring to a projector).
+        * Disable idle sleep (on macOS: leave "pmset noidle" running in a
+          terminal window, on other OSes you might have to adjust the power
+          management settings).
+        * Open this file in Safari (other browsers work too).
+        * Uncheck "Always Show Toolbar in Full Screen" in Safari's "View" menu
+          and go fullscreen.
+        * When everyone's set to go, press the space bar to start the timer.
+        * A timestamp corresponding to the start time is appended to the url,
+          just in case your computer crashes and you need to reboot.
+
+        */
+
+        var duration = 90;  // in minutes
+
+        var remainingLabel = "m";
+        var remainingAboveContent = "NOCH";
+        var remainingBelowContent = "";
+        var startContent = "BEGINN";
+        var endContent = "ENDE";
+
+        // ---------------------------------------------------------------------
+
         // via https://stackoverflow.com/a/18473154
         function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-            var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+            var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
             return {
                 x: centerX + (radius * Math.cos(angleInRadians)),
@@ -39,8 +136,8 @@
             };
         }
 
-        function describeArc(x, y, radius, startAngle, endAngle){
-
+        // via https://stackoverflow.com/a/18473154
+        function describeArc(x, y, radius, startAngle, endAngle) {
             var start = polarToCartesian(x, y, radius, endAngle);
             var end = polarToCartesian(x, y, radius, startAngle);
 
@@ -54,49 +151,138 @@
             return d;
         }
 
-        // ---------------------------------------------------------------------
+        var running = false;
+        var s;
+        var e;
 
-        // Usage:
-        // * disable notifications (macOS does this out of the box when mirroring)
-        // * disable idle sleep (on macOS: pmset noidle)
-        // * uncheck "Always Show Toolbar in Full Screen" in Chrome's "View" menu and go fullscreen
-        // * adjust exam duration below
-        // * open this file in Chrome
-        // * a blank screen will appear
-        // * when everyone's ready, click anywhere to start timer
+        // resume timer after a reload
+        if (window.location.hash) {
+            s = new Date(parseInt(window.location.hash.substring(1)));
+            e = new Date(s.getTime() + duration*60000);
 
-        duration = 90;  // in min
+            running = true;
+        }
 
-        show = false;
-        document.onclick = function(event) {
-            if (!show) {
-                show = true;
+        // space bar => start timer
+        document.body.onkeyup = function(event) {
+            if (!running && event.keyCode == 32) {
                 s = new Date();
                 e = new Date(s.getTime() + duration*60000);
+
+                running = true;
+                window.location.hash = s.getTime();
             }
         };
 
+        // run the following 10 times a second. yes, much of this could be run
+        // only once, but none of it is massively resource-intensive and keeping
+        // it this way automatically adjusts the size of everything in case the
+        // browser window is resized or the scaling factor is changed while the
+        // timer is running
         setInterval(function() {
-            if (show) {
-                remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
-                remainingDeg = remaining / (duration*60000) * 360;
+            var w = document.getElementById("timer").clientWidth;
+            var h = document.getElementById("timer").clientHeight;
+            var size = Math.min(h, w);
 
-                x=window.innerWidth/2;
-                y=window.innerHeight/2-30;  // adjust this to move everything vertically
+            // compute line thicknesses and font sizes
+            var spinnerArcThickness = size / 25;
+            var spinnerBackgroundArcThickness = size / 60;
+            var remainingFontSize = size / 5;
+            var remainingAboveFontSize = size / 15;
+            var remainingBelowFontSize = size / 15;
+            var startEndFontSize = size / 25;
 
-                document.getElementById("spinner").setAttribute("d", describeArc(x, y, 200, 360-remainingDeg, 360));
-                document.getElementById("spinner_background").setAttribute("d", describeArc(x, y, 200, 0, 359.999));
-                document.getElementById("label").setAttribute("x", x);
-                document.getElementById("label").setAttribute("y", y);
-                document.getElementById("label").innerHTML = Math.ceil(remaining/60000) + "m";
+            // define spinner/arc position
+            var spinnerRadius = size / 2 - spinnerArcThickness / 2;
+            var spinnerX = w / 2;
+            var spinnerY = h / 2;
 
-                document.getElementById("label2").setAttribute("x", x);
-                document.getElementById("label2").setAttribute("y", y+60);
-                document.getElementById("label2").innerHTML = "REMAINING";
+            // define position of labels
+            var remainingY = spinnerY;
+            var remainingAboveY = remainingY - .7 * (remainingFontSize + remainingAboveFontSize);
+            var remainingBelowY = remainingY + .6 * (remainingFontSize + remainingBelowFontSize);
+            // weird: the spacing's off if this ^ is the same as the other one
 
-                document.getElementById("label3").setAttribute("x", x);
-                document.getElementById("label3").setAttribute("y", y+260);
-                document.getElementById("label3").innerHTML = "START: " + s.toTimeString().substring(0,5) + " – END: " + e.toTimeString().substring(0,5);
+            // shift labels if only one is set
+            if (remainingAboveContent && !remainingBelowContent) {
+                remainingY += .25 * (remainingFontSize + remainingAboveFontSize);
+                remainingAboveY += .25 * (remainingFontSize + remainingAboveFontSize);
+            }
+            if (!remainingAboveContent && remainingBelowContent) {
+                remainingY -= .25 * (remainingFontSize + remainingAboveFontSize);
+                remainingBelowY -= .25 * (remainingFontSize + remainingAboveFontSize);
+            };
+
+            // compute radius of arc on which start and end times will be placed
+            var startEndCircleRadius = spinnerRadius - startEndFontSize;
+
+            // apply computed values
+            document.getElementById("spinner").setAttribute("stroke-width", spinnerArcThickness);
+            document.getElementById("spinner-background").setAttribute("stroke-width", spinnerBackgroundArcThickness);
+            document.getElementById("remaining").setAttribute("font-size", remainingFontSize);
+            document.getElementById("remaining").setAttribute("x", spinnerX);
+            document.getElementById("remaining").setAttribute("y", remainingY);
+            document.getElementById("remaining-above").setAttribute("font-size", remainingAboveFontSize);
+            document.getElementById("remaining-above").innerHTML = remainingAboveContent;
+            document.getElementById("remaining-above").setAttribute("x", spinnerX);
+            document.getElementById("remaining-above").setAttribute("y", remainingAboveY);
+            document.getElementById("remaining-below").setAttribute("font-size", remainingBelowFontSize);
+            document.getElementById("remaining-below").innerHTML = remainingBelowContent;
+            document.getElementById("remaining-below").setAttribute("x", spinnerX);
+            document.getElementById("remaining-below").setAttribute("y", remainingBelowY);
+            document.getElementById("start-end-circle").setAttribute("d", describeArc(spinnerX, spinnerY, startEndCircleRadius, 0, 359.999));
+            document.getElementById("start-end").setAttribute("font-size", startEndFontSize);
+            document.getElementById("start-end").setAttribute("x", Math.PI * startEndCircleRadius);
+
+            if (!running) {
+
+                // if timer not yet running: show total time
+                document.getElementById("spinner").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
+                document.getElementById("spinner-background").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
+                document.getElementById("remaining").innerHTML = duration + remainingLabel;
+            } else {
+
+                // if timer running: set start and end times and update timer
+                document.getElementById("start-end-path").innerHTML = startContent + ": " + s.toTimeString().substring(0,5) + " – " + endContent + ": " + e.toTimeString().substring(0,5);
+
+                // tick, tock, tick, tock, ...
+                var remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
+                var remainingDeg = remaining / (duration * 60 * 1000) * 360;
+
+                document.getElementById("spinner").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 360 - remainingDeg, 360));
+                document.getElementById("spinner-background").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
+                document.getElementById("remaining").innerHTML = Math.ceil(remaining / (60 * 1000)) + remainingLabel;
+            }
+
+            // show and hide instructions depending on state
+            var state;
+            if (!running) {
+                state = "before"
+            } else {
+                var remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
+                if (remaining > 10 * 60 * 1000) {
+                    state = "during"
+                } else if (remaining > 0) {
+                    state = "homestretch"
+                } else {
+                    state = "after"
+                }
+            }
+            var otherStates = ["before", "during", "homestretch", "after"];
+            otherStates.splice(otherStates.indexOf(state), 1);
+
+            // in-active states
+            for (o in otherStates) {
+                var elements = document.getElementsByClassName(otherStates[o]);
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].style.display = "none";
+                }
+            }
+
+            // active states
+            var elements = document.getElementsByClassName(state);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "block";
             }
         }, 100);
     </script>
