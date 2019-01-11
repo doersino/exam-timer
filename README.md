@@ -32,7 +32,7 @@
         ```
         <li class="before during homestretch">Always visible, but disappears once the exam is over.</li>
         ```
-2. Once it's exam time, **open `examtimer.html` in a browser**.
+2. Before your students arrive, **open `examtimer.html` in a browser**.
     * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
     * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too. On a Mac, run `caffeinate -u` in a terminal window in the background.
     * If you're running software that might show some sort of notification of update dialog (looking at you, Java), it's best to keep it closed during the exam.
