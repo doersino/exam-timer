@@ -2,7 +2,17 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Exam timer</title>
+    <script>
+        // Usage: See README.md or https://github.com/doersino/exam-timer/.
+        var duration = 90;  // in minutes
+
+        var remainingLabel = "m";
+        var remainingAboveContent = "NOCH";
+        var remainingBelowContent = "";
+        var startContent = "BEGINN";
+        var endContent = "ENDE";
+    </script>
     <style>
         * {
             margin: 0;
@@ -92,39 +102,6 @@
         </svg>
     </section>
     <script>
-        /*
-
-        Usage:
-        * Add your own instructions above. "class="before during homestretch""
-          means that the specific element is shown before the exam, during the
-          initial length - 10 minutes and during the homestretch (the final 10
-          minutes). Additionally, an "after" class exists. These four classes
-          can be combined arbitrarily or left out for the element to be visible
-          in all four states.
-        * Adjust the exam duration below.
-        * Disable notifications etc. (macOS does this out of the box when
-          screen mirroring to a projector).
-        * Disable idle sleep (on macOS: leave "pmset noidle" running in a
-          terminal window, on other OSes you might have to adjust the power
-          management settings).
-        * Open this file in Safari (other browsers work too).
-        * Uncheck "Always Show Toolbar in Full Screen" in Safari's "View" menu
-          and go fullscreen.
-        * When everyone's set to go, press the space bar to start the timer.
-        * A timestamp corresponding to the start time is appended to the url,
-          just in case your computer crashes and you need to reboot.
-
-        */
-
-        var duration = 90;  // in minutes
-
-        var remainingLabel = "m";
-        var remainingAboveContent = "NOCH";
-        var remainingBelowContent = "";
-        var startContent = "BEGINN";
-        var endContent = "ENDE";
-
-        // ---------------------------------------------------------------------
 
         // via https://stackoverflow.com/a/18473154
         function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
