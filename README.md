@@ -2,7 +2,7 @@
 
 *A truly bespoke, hand-crafted timepiece for use during written exams.*
 
-Take a look at [the demo](The https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out more.
+Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out more.
 
 <!-- TODO photo -->
 
