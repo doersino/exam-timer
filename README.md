@@ -2,6 +2,8 @@
 
 *A truly bespoke, hand-crafted timepiece for use during written exams.*
 
+Take a look at [the demo](The https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out more.
+
 <!-- TODO photo -->
 
 
@@ -36,7 +38,7 @@
     * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
     * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too. On a Mac, run `caffeinate -u` in a terminal window in the background.
     * If you're running software that might show some sort of notification of update dialog (looking at you, Java), it's best to keep it closed during the exam.
-3. Once everything's ready to go, **press the space bar** to start the timer.
+3. Once everything's ready to go, **press the <kbd>space</kbd> bar** to start the timer.
     * A Unix timestamp corresponding to the start time will be appended to the URL, so if your computer happens to crash, you can resume the timer via your browser history.
 
 
