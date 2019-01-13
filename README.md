@@ -12,7 +12,7 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
 * Not every lecture hall has a wall clock.
 * A faint projector hum is **less distracting for your students** than the sound of writing the current time on a chalkboard every 10 minutes.
 * Having relevant organizational matters always visible will **reduce the number of questions**.
-* Exams for large courses are commonly written in multiple locations at the same time. This tool helps **enforce the same guidelines everywhere**.
+* Exams for large courses are commonly written in multiple locations at the same time. This tool helps **communicate the same guidelines everywhere**.
 * This tool is **easy to configure**, has **no dependencies** and **runs in your browser**.
 
 
