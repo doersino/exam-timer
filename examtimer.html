@@ -207,12 +207,15 @@
             document.getElementById("start-end").setAttribute("x", Math.PI * startEndCircleRadius);
 
             if (!running) {
+                document.getElementById("timer").style.opacity = 0.666;
 
                 // if timer not yet running: show total time
                 document.getElementById("spinner").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
                 document.getElementById("spinner-background").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
                 document.getElementById("remaining").innerHTML = duration + remainingLabel;
+
             } else {
+                document.getElementById("timer").style.opacity = 1.0;
 
                 // if timer running: set start and end times and update timer
                 document.getElementById("start-end-path").innerHTML = startContent + ": " + s.toTimeString().substring(0,5) + " – " + endContent + ": " + e.toTimeString().substring(0,5);
