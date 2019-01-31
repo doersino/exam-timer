@@ -2,7 +2,7 @@
 
 *A truly bespoke, hand-crafted timepiece for use during written exams.*
 
-Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out more.
+Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out what this is all about.
 
 <!-- TODO photo -->
 
@@ -32,7 +32,7 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
         You can combine these classes arbitrarily:
 
         ```
-        <li class="before during homestretch">Always visible, but disappears once the exam is over.</li>
+        <li class="before during homestretch">Visible until the exam is over.</li>
         ```
 2. Before your students arrive, **open `examtimer.html` in a browser**.
     * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
