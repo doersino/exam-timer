@@ -56,7 +56,6 @@
             flex: 0.4;
             height: 100vh;
             padding: 1.5rem;
-            cursor: none;
         }
         svg {
             width: 100%;
@@ -145,6 +144,23 @@
                 running = true;
                 window.location.hash = s.getTime();
             }
+        };
+
+        // hide cursor once it hasn't been moved for 2s
+        // based on https://stackoverflow.com/a/31798987
+        var cursorTimeout;
+        document.body.onmousemove = function() {
+            if (document.body.style.cursor != "none") {
+                if (cursorTimeout) {
+                    clearTimeout(cursorTimeout);
+                }
+            } else {
+                document.body.style.cursor = "default";
+            }
+
+            cursorTimeout = setTimeout(function() {
+                document.body.style.cursor = "none";
+            }, 2000);
         };
 
         // run the following 10 times a second. yes, much of this could be run
