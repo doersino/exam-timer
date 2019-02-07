@@ -35,8 +35,8 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
         <li class="before during homestretch">Visible until the exam is over.</li>
         ```
 2. Before your students arrive, **open `examtimer.html` in a browser**.
-    * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too. On a Mac, run `caffeinate -u` in a terminal window in the background.
-    * If you're running software that might show some sort of notification of update dialog (looking at you, Java), it's best to keep it closed during the exam.
+    * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too.
+    * If you're running software that might show some sort of notification or update dialog (looking at you, Java), it's best to keep it closed during the exam.
     * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
 3. Once everything's ready to go, **press the <kbd>space</kbd> bar** to start the timer.
     * A Unix timestamp corresponding to the start time will be appended to the URL, so if your computer happens to crash, you can resume the timer via your browser history.
