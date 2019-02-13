@@ -129,7 +129,7 @@
 
         // resume timer after a reload
         if (window.location.hash) {
-            s = new Date(parseInt(window.location.hash.substring(1)));
+            s = new Date(parseInt(window.location.hash.substring(1)) * 1000);
             e = new Date(s.getTime() + duration*60000);
 
             running = true;
@@ -142,7 +142,7 @@
                 e = new Date(s.getTime() + duration*60000);
 
                 running = true;
-                window.location.hash = s.getTime();
+                window.location.hash = Math.round(s.getTime() / 1000);
             }
         };
 
