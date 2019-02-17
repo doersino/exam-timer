@@ -34,6 +34,8 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
         ```
         <li class="before during homestretch">Visible until the exam is over.</li>
         ```
+
+        Elements without any of these four classes will always be shown.
 2. Before your students arrive, **open `examtimer.html` in a browser**.
     * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too.
     * If you're running software that might show some sort of notification or update dialog (looking at you, Java), it's best to keep it closed during the exam.
