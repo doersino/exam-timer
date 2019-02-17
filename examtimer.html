@@ -253,15 +253,15 @@
             // show and hide instructions depending on state
             var state;
             if (!running) {
-                state = "before"
+                state = "before";
             } else {
                 var remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
                 if (remaining > 10 * 60 * 1000) {
-                    state = "during"
+                    state = "during";
                 } else if (remaining > 0) {
-                    state = "homestretch"
+                    state = "homestretch";
                 } else {
-                    state = "after"
+                    state = "after";
                 }
             }
             var otherStates = ["before", "during", "homestretch", "after"];
