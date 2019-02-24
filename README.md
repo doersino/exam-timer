@@ -42,7 +42,8 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
     * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
     * If necessary, adjust the text size to your liking using your browser's built-in tools (commonly <kbd>ctrl/⌘</kbd><kbd>+/-</kbd>).
 3. Once everything's ready to go, **press the <kbd>space</kbd> bar** to start the timer.
-    * A Unix timestamp corresponding to the start time will be appended to the URL, so if your computer happens to crash, you can resume the timer via your browser history.
+    * You can **pause (and resume) the timer** by again pressing the <kbd>space</kbd> bar.
+    * A Unix timestamp corresponding to the start time plus the total pause duration will be appended to the URL, so if your computer happens to crash, you can resume the timer via your browser history.
 
 
 ## Notes

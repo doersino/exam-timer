@@ -123,26 +123,47 @@
             return d;
         }
 
-        var running = false;
+        var started = false;
         var s;
         var e;
 
+        var paused = false;
+        var p;
+        var pPrev = 0;
+        var pCurr = 0;
+        var pTotal = 0;
+        var eWithPauses;
+
         // resume timer after a reload
         if (window.location.hash) {
-            s = new Date(parseInt(window.location.hash.substring(1)) * 1000);
+            var loc = window.location.hash.substring(1);
+            var [rawS, rawPPrev] = loc.split("+");
+
+            s = new Date(parseInt(rawS) * 1000);
+            pPrev = parseInt(rawPPrev * 1000);
             e = new Date(s.getTime() + duration*60000);
 
-            running = true;
+            started = true;
         }
 
-        // space bar => start timer
+        // space bar => start timer or pause/unpause
         document.body.onkeyup = function(event) {
-            if (!running && event.keyCode == 32) {
-                s = new Date();
-                e = new Date(s.getTime() + duration*60000);
+            if (event.keyCode == 32) {
+                if (!started) {
+                    s = new Date();
+                    e = new Date(s.getTime() + duration*60000);
 
-                running = true;
-                window.location.hash = Math.round(s.getTime() / 1000);
+                    started = true;
+                    window.location.hash = Math.round(s.getTime() / 1000) + "+" + pTotal;
+                } else {
+                    if (!paused) {
+                        p = new Date();
+                    } else {
+                        pPrev += pCurr;
+                        pCurr = 0;
+                    }
+                    paused = !paused;
+                }
             }
         };
 
@@ -167,7 +188,7 @@
         // only once, but none of it is massively resource-intensive and keeping
         // it this way automatically adjusts the size of everything in case the
         // browser window is resized or the scaling factor is changed while the
-        // timer is running
+        // timer is started
         setInterval(function() {
             var w = document.getElementById("timer").clientWidth;
             var h = document.getElementById("timer").clientHeight;
@@ -223,26 +244,35 @@
             document.getElementById("start-end").setAttribute("font-size", startEndFontSize);
             document.getElementById("start-end").setAttribute("x", Math.PI * startEndCircleRadius);
 
-            if (!running) {
-                document.getElementById("timer").style.opacity = 0.666;
+            if (!started) {
+                document.getElementById("timer").style.opacity = 0.5;
 
-                // if timer not yet running: show total time
+                // if timer not yet started: show total time
                 document.getElementById("spinner").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
                 document.getElementById("spinner-background").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 0, 359.999));
                 document.getElementById("remaining").innerHTML = duration + remainingLabel;
 
             } else {
-                // if timer running: set start and end times and update timer
-                document.getElementById("start-end-path").innerHTML = startContent + ": " + s.toTimeString().substring(0,5) + " – " + endContent + ": " + e.toTimeString().substring(0,5);
+
+                // handle pauses
+                if (paused) {
+                    pCurr = (new Date()).getTime() - p.getTime();
+                    window.location.hash = Math.round(s.getTime() / 1000) + "+" + Math.round(pTotal / 1000);
+                }
+                pTotal = pPrev + pCurr;
+                eWithPauses = new Date(e.getTime() + pTotal);
+
+                // if timer started: show start and end times and update timer
+                document.getElementById("start-end-path").innerHTML = startContent + ": " + s.toTimeString().substring(0,5) + " – " + endContent + ": " + eWithPauses.toTimeString().substring(0,5);
 
                 // tick, tock, tick, tock, ...
-                var remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
+                var remaining = Math.max(eWithPauses.getTime() - (new Date()).getTime(), 0);
                 var remainingDeg = remaining / (duration * 60 * 1000) * 360;
 
-                if (remaining > 0) {
+                if (!paused && remaining > 0) {
                     document.getElementById("timer").style.opacity = 1.0;
                 } else {
-                    document.getElementById("timer").style.opacity = 0.666;
+                    document.getElementById("timer").style.opacity = 0.5;
                 }
 
                 document.getElementById("spinner").setAttribute("d", describeArc(spinnerX, spinnerY, spinnerRadius, 360 - remainingDeg, 360));
@@ -252,10 +282,10 @@
 
             // show and hide instructions depending on state
             var state;
-            if (!running) {
+            if (!started) {
                 state = "before";
             } else {
-                var remaining = Math.max(e.getTime() - (new Date()).getTime(), 0);
+                var remaining = Math.max(eWithPauses.getTime() - (new Date()).getTime(), 0);
                 if (remaining > 10 * 60 * 1000) {
                     state = "during";
                 } else if (remaining > 0) {
