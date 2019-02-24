@@ -106,7 +106,7 @@
 
         // via https://stackoverflow.com/a/18473154
         function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-            var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            let angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
             return {
                 x: centerX + (radius * Math.cos(angleInRadians)),
@@ -116,12 +116,12 @@
 
         // via https://stackoverflow.com/a/18473154
         function describeArc(x, y, radius, startAngle, endAngle) {
-            var start = polarToCartesian(x, y, radius, endAngle);
-            var end = polarToCartesian(x, y, radius, startAngle);
+            let start = polarToCartesian(x, y, radius, endAngle);
+            let end = polarToCartesian(x, y, radius, startAngle);
 
-            var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+            let largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
 
-            var d = [
+            let d = [
                 "M", start.x, start.y,
                 "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
             ].join(" ");
@@ -142,8 +142,8 @@
 
         // resume timer after a reload
         if (window.location.hash) {
-            var loc = window.location.hash.substring(1);
-            var [rawS, rawPPrev] = loc.split("+");
+            let loc = window.location.hash.substring(1);
+            let [rawS, rawPPrev] = loc.split("+");
 
             s = new Date(parseInt(rawS) * 1000);
             pPrev = parseInt(rawPPrev * 1000);
@@ -196,27 +196,27 @@
         // browser window is resized or the scaling factor is changed while the
         // timer is started
         setInterval(function() {
-            var w = document.getElementById("timer").clientWidth;
-            var h = document.getElementById("timer").clientHeight;
-            var size = Math.min(h, w);
+            let w = document.getElementById("timer").clientWidth;
+            let h = document.getElementById("timer").clientHeight;
+            let size = Math.min(h, w);
 
             // compute line thicknesses and font sizes
-            var spinnerArcThickness = size / 25;
-            var spinnerBackgroundArcThickness = size / 60;
-            var remainingFontSize = size / 5;
-            var remainingAboveFontSize = size / 15;
-            var remainingBelowFontSize = size / 15;
-            var startEndFontSize = size / 25;
+            let spinnerArcThickness = size / 25;
+            let spinnerBackgroundArcThickness = size / 60;
+            let remainingFontSize = size / 5;
+            let remainingAboveFontSize = size / 15;
+            let remainingBelowFontSize = size / 15;
+            let startEndFontSize = size / 25;
 
             // define spinner/arc position
-            var spinnerRadius = size / 2 - spinnerArcThickness / 2;
-            var spinnerX = w / 2;
-            var spinnerY = h / 2;
+            let spinnerRadius = size / 2 - spinnerArcThickness / 2;
+            let spinnerX = w / 2;
+            let spinnerY = h / 2;
 
             // define position of labels
-            var remainingY = spinnerY;
-            var remainingAboveY = remainingY - .7 * (remainingFontSize + remainingAboveFontSize);
-            var remainingBelowY = remainingY + .6 * (remainingFontSize + remainingBelowFontSize);
+            let remainingY = spinnerY;
+            let remainingAboveY = remainingY - .7 * (remainingFontSize + remainingAboveFontSize);
+            let remainingBelowY = remainingY + .6 * (remainingFontSize + remainingBelowFontSize);
             // weird: the spacing's off if this ^ is the same as the other one
 
             // shift labels if only one is set
@@ -230,7 +230,7 @@
             };
 
             // compute radius of arc on which start and end times will be placed
-            var startEndCircleRadius = spinnerRadius - startEndFontSize;
+            let startEndCircleRadius = spinnerRadius - startEndFontSize;
 
             // apply computed values
             document.getElementById("spinner").setAttribute("stroke-width", spinnerArcThickness);
@@ -272,8 +272,8 @@
                 document.getElementById("start-end-path").innerHTML = startContent + ": " + s.toTimeString().substring(0,5) + " – " + endContent + ": " + eWithPauses.toTimeString().substring(0,5);
 
                 // tick, tock, tick, tock, ...
-                var remaining = Math.max(eWithPauses.getTime() - (new Date()).getTime(), 0);
-                var remainingDeg = remaining / (duration * 60 * 1000) * 360;
+                let remaining = Math.max(eWithPauses.getTime() - (new Date()).getTime(), 0);
+                let remainingDeg = remaining / (duration * 60 * 1000) * 360;
 
                 if (!paused && remaining > 0) {
                     document.getElementById("timer").style.opacity = 1.0;
@@ -287,7 +287,7 @@
             }
 
             // show and hide instructions depending on state
-            var state;
+            let state;
             if (!started) {
                 state = "before";
             } else {
@@ -300,20 +300,20 @@
                     state = "after";
                 }
             }
-            var otherStates = ["before", "during", "homestretch", "after"];
+            let otherStates = ["before", "during", "homestretch", "after"];
             otherStates.splice(otherStates.indexOf(state), 1);
 
             // inactive states
             for (o in otherStates) {
-                var elements = document.getElementsByClassName(otherStates[o]);
-                for (var i = 0; i < elements.length; i++) {
+                let elements = document.getElementsByClassName(otherStates[o]);
+                for (let i = 0; i < elements.length; i++) {
                     elements[i].style.display = "none";
                 }
             }
 
             // active states
-            var elements = document.getElementsByClassName(state);
-            for (var i = 0; i < elements.length; i++) {
+            let elements = document.getElementsByClassName(state);
+            for (let i = 0; i < elements.length; i++) {
                 elements[i].style.display = "block";
             }
         }, 100);
