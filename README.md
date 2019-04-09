@@ -4,7 +4,7 @@
 
 Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) (press <kbd>space</kbd> to start the timer) or continue reading to find out what this is all about.
 
-<!-- TODO photo -->
+<img src="photo.jpg" alt="">
 
 
 ## Why?
@@ -48,5 +48,6 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
 
 ## Notes
 
-* The first version of this timer (see commit `771a822`) was successfully used during the "Datenbanksysteme I" exam at the University of Tübingen in the winter of 2018. <!-- TODO info1 -->
+* The first version of this timer (see commit `771a822`) was successfully used during the "Datenbanksysteme I" exam at the University of Tübingen in the 2017/18 winter semester.
+* The improved version was in use during the "Informatik 1" (CS101 equivalent) exams at the University of Tübingen in the 2018/19 winter semester.
 * A hat tip to Tim Beckmann, whose [examclock](https://github.com/elogy/examclock) I've considerd forking after building the first version of this timer and before extending it to more-or-less match his clock's feature set. (Klausu(h)r ist der *beste* Wortwitz!)
