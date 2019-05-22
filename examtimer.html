@@ -263,7 +263,7 @@
                 // handle pauses
                 if (paused) {
                     pCurr = (new Date()).getTime() - p.getTime();
-                    window.location.hash = Math.round(s.getTime() / 1000) + "+" + Math.round(pTotal / 1000);
+                    history.replaceState({}, '', '#' + Math.round(s.getTime() / 1000) + "+" + Math.round(pTotal / 1000));
                 }
                 pTotal = pPrev + pCurr;
                 eWithPauses = new Date(e.getTime() + pTotal);
