@@ -129,6 +129,34 @@
             return d;
         }
 
+        // via https://github.com/doersino/markdeep-slides/blob/master/markdeep-slides/markdeep-slides.js
+        function toggleFullscreen() {
+            var fullscreen = !!(window.fullScreen || document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+
+            if (fullscreen) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            } else {
+                var root = document.documentElement;
+                if (root.requestFullscreen) {
+                    root.requestFullscreen();
+                } else if (root.mozRequestFullScreen) {
+                    root.mozRequestFullScreen();
+                } else if (root.webkitRequestFullscreen) {
+                    root.webkitRequestFullscreen();
+                } else if (root.msRequestFullscreen) {
+                    root.msRequestFullscreen();
+                }
+            }
+        }
+
         var started = false;
         var s;
         var e;
@@ -152,8 +180,10 @@
             started = true;
         }
 
-        // space bar => start timer or pause/unpause
+        // handle key presses
         document.body.onkeyup = function(event) {
+
+            // space bar => start timer or pause/unpause
             if (event.keyCode == 32) {
                 if (!started) {
                     s = new Date();
@@ -170,6 +200,11 @@
                     }
                     paused = !paused;
                 }
+            }
+
+            // f key => toggle fullscreen
+            if (event.keyCode == 70) {
+                toggleFullscreen();
             }
         };
 

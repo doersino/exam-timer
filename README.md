@@ -39,7 +39,7 @@ Take a look at [the demo](https://doersino.github.io/exam-timer/examtimer.html) 
 2. Before your students arrive, **open `examtimer.html` in a browser**.
     * Disable your computer's sleep mode (or set the sleep timer to a sufficiently large value). If there's a separate screen sleep mode or screen saver, disable that too.
     * If you're running software that might show some sort of notification or update dialog (looking at you, Java), it's best to keep it closed during the exam.
-    * Enter fullscreen mode and hide the address bar (that's supposedly somewhere in the "View" menu).
+    * Press <kbd>f</kbd> to enter fullscreen mode.
     * If necessary, adjust the text size to your liking using your browser's built-in tools (commonly <kbd>ctrl/⌘</kbd><kbd>+/-</kbd>).
 3. Once everything's ready to go, **press the <kbd>space</kbd> bar** to start the timer.
     * You can **pause (and resume) the timer** by again pressing the <kbd>space</kbd> bar.
